@@ -3,6 +3,8 @@ package com.mitya;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
+import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.util.CharsetUtil;
@@ -13,8 +15,10 @@ public class ServerRequestHandler {
         String url = "";
         if (s.contains("%3C")) {
             url = s.substring(s.indexOf("%3C") + 3, s.length() - 3);
-            s = s.substring(1, 9);
+            s = s.substring(0, 9);
         }
+        System.out.println(s);
+        System.out.println(url);
         switch (s) {
             case "/hello":
                 return valueHelloWorld();
@@ -37,10 +41,12 @@ public class ServerRequestHandler {
     }
 
     private FullHttpResponse valueRedirect(String url) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FullHttpResponse r = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.FOUND);
+        r.headers().set(HttpHeaders.Names.LOCATION, url);
+        return r;
     }
 
     private FullHttpResponse notFoundValue() {
-        return new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer("<p>Not Found", CharsetUtil.UTF_8));
+        return new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer("<p>Not Found</p>", CharsetUtil.UTF_8));
     }
 }

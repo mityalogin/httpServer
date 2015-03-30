@@ -4,19 +4,19 @@ import java.util.Date;
 
 public class Data {
 
-    private String ip = "";
-    private String uri = "";
-    private Date date = new Date();
-    private int sentBytes = 0;
-    private int recievedBytes = 0;
-    private double speed = 0;
+    private final String ip;
+    private final String uri;
+    private final Date date;
+    private final int sent_Bytes;
+    private final int recieved_Bytes;
+    private final double speed;
 
-    Data(String ip, String uri, int sentBytes, int recievedBytes, double speed) {
+    Data(String ip, String uri, int sent_Bytes, int recieved_Bytes, double speed) {
         this.ip = ip;
         this.uri = uri;
         this.date = new Date();
-        this.sentBytes = sentBytes;
-        this.recievedBytes = recievedBytes;
+        this.sent_Bytes = sent_Bytes;
+        this.recieved_Bytes = recieved_Bytes;
         this.speed = speed;
     }
 
@@ -32,15 +32,15 @@ public class Data {
         return date.toString();
     }
 
-    public String getSentBytes() {
-        return sentBytes+"";
+    public String getSent_Bytes() {
+        return sent_Bytes + "";
     }
 
-    public String getRecieviedBytes() {
-        return recievedBytes+"";
+    public String getRecievie_dBytes() {
+        return recieved_Bytes + "";
     }
 
     public String getSpeed() {
-        return speed+"";
+        return speed + "";
     }
 }
