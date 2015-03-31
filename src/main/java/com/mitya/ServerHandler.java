@@ -1,6 +1,6 @@
 package com.mitya;
 
-import io.netty.buffer.ByteBuf;
+import static com.mitya.InitializerServer.sample;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -10,6 +10,11 @@ import io.netty.handler.codec.http.HttpRequest;
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     private String uri;
+    private String ip;
+
+    public ServerHandler(String ip) {
+        this.ip = ip;
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -17,15 +22,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             return;
         }
         uri = ((HttpRequest) msg).getUri();
-        System.out.println(uri);
+        sample.increaseNumber();
+        sample.increaseActive();
         FullHttpResponse page = new ServerRequestHandler().checkValue((uri));
-        System.out.println("22");
         ctx.write(page).addListener(ChannelFutureListener.CLOSE);
-        System.out.println("33");
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        sample.reduceActive();
         ctx.flush();
     }
 

@@ -1,5 +1,6 @@
 package com.mitya;
 
+import static com.mitya.InitializerServer.sample;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -37,7 +38,7 @@ public class ServerRequestHandler {
     }
 
     private FullHttpResponse valueStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.copiedBuffer(sample.getPage(), CharsetUtil.UTF_8));
     }
 
     private FullHttpResponse valueRedirect(String url) {
