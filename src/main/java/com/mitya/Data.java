@@ -9,17 +9,15 @@ public class Data {
     private final Date date;
     private final int sent_Bytes;
     private final int recieved_Bytes;
-    private final double send_speed;
-    private final double recieved_speed;
+    private final double speed;
 
-    Data(String ip, String uri, int sent_Bytes, int recieved_Bytes, double send_speed,double recieved_speed) {
+    Data(String ip, String uri, int sent_Bytes, int recieved_Bytes, double speed) {
         this.ip = ip;
         this.uri = uri;
         this.date = new Date();
         this.sent_Bytes = sent_Bytes;
         this.recieved_Bytes = recieved_Bytes;
-        this.send_speed = send_speed;
-        this.recieved_speed=recieved_speed;
+        this.speed = speed;
     }
 
     Data() {
@@ -46,10 +44,7 @@ public class Data {
         return recieved_Bytes + "";
     }
 
-    public String getSend_speed() {
-        return send_speed + "";
-    }
-     public String getRecieved_speed() {
-        return recieved_speed + "";
+    public String getSpeed() {
+        return speed + "";
     }
 }

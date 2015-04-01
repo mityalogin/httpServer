@@ -42,6 +42,7 @@ public class ServerRequestHandler {
     }
 
     private FullHttpResponse valueRedirect(String url) {
+        sample.newURL(url);
         FullHttpResponse r = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.FOUND);
         r.headers().set(HttpHeaders.Names.LOCATION, url);
         return r;

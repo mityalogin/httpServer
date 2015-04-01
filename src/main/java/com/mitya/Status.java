@@ -8,6 +8,8 @@ public class Status {
     private int unique = 0;
     private int active = 0;
     private ArrayList<Data> conne = new ArrayList<Data>();
+    private ArrayList<DataIP> ipStat = new ArrayList<DataIP>();
+    private ArrayList<DataURL> urlStat = new ArrayList<DataURL>();
     private static Status sample = null;
 
     private Status() {
@@ -22,16 +24,27 @@ public class Status {
     }
 
     public synchronized String getPage() {
+        unique = ipStat.size();
         String s = "<html><p><center>Page Status</center></p></head>"
                 .concat("<table border =2><tr><th>Total number of requests</th><th>Number of open connections</th>")
                 .concat("<th>Number of unique queries</th></tr>")
                 .concat("<tr><th>" + number + "</th><th>" + active + "</th><th>" + unique + "</th></tr></table>")
                 .concat("<table border =2><tr><th>IP</th><th>URI</th><th>Timestamp</th><th>sent_Bytes</th>")
-                .concat("<th>recieved_Bytes</th><th>send_speed</th><th>recieved_speed</th></tr>");
-        for(int i=0;i<conne.size();i++)
-                s+="<tr><th>"+conne.get(i).getIP()+"</th><th>"+conne.get(i).getURI()+"</th><th>"+conne.get(i).getDate()
-                        .concat("</th><th>"+conne.get(i).getSent_Bytes()+"</th><th>"+conne.get(i).getRecievie_dBytes())
-                        .concat("</th><th>"+conne.get(i).getSend_speed()+"</th><th>"+conne.get(i).getRecieved_speed()+"</th></tr>");
+                .concat("<th>recieved_Bytes</th><th>speed</th></tr>");
+        for (int i = 0; i < conne.size(); i++) {
+            s += "<tr><th>" + conne.get(i).getIP() + "</th><th>" + conne.get(i).getURI() + "</th><th>" + conne.get(i).getDate()
+                    .concat("</th><th>" + conne.get(i).getSent_Bytes() + "</th><th>" + conne.get(i).getRecievie_dBytes())
+                    .concat("</th><th>" + conne.get(i).getSpeed() + "</th></tr>");
+        }
+        s += "</table><table border=2><tr><th>IP</th><th>CountIP</th><th>LastDate</th></tr>";
+        for (int i = 0; i < ipStat.size(); i++) {
+            s += "<tr><th>" + ipStat.get(i).getIp() + "</th><th>" + ipStat.get(i).getCount() + "</th><th>" + ipStat.get(i).getDate() + "</th>";
+        }
+        s += "</table><table border=2><tr><th>URL</th><th>CountURL</th></tr>";
+        for (int i = 0; i < urlStat.size(); i++) {
+            s += "<tr><th>" + urlStat.get(i).getURL() + "</th><th>" + urlStat.get(i).getCount() + "</th></tr>";
+        }
+        s += "</table";
         return s;
     }
 
@@ -57,5 +70,32 @@ public class Status {
             conne.remove(0);
         }
         conne.add(value);
+    }
+
+    public synchronized void newIP(String ip) {
+        boolean flag = true;
+        for (int i = 0; i < ipStat.size(); i++) {
+            if (ipStat.get(i).getIp().equals(ip)) {
+                ipStat.get(i).increaseCount();
+                ipStat.get(i).returnDate();
+                flag = false;
+            }
+        }
+        if (flag) {
+            ipStat.add(new DataIP(ip));
+        }
+    }
+
+    public synchronized void newURL(String url) {
+        boolean flag = true;
+        for (int i = 0; i < urlStat.size(); i++) {
+            if (urlStat.get(i).getURL().equals(url)) {
+                urlStat.get(i).increaseCount();
+                flag = false;
+            }
+        }
+        if (flag) {
+            urlStat.add(new DataURL(url));
+        }
     }
 }
