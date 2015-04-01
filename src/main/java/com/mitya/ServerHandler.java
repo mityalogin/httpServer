@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class ServerHandler extends ChannelInboundHandlerAdapter {
@@ -41,10 +43,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         sample.reduceActive();
         ctx.flush();
-
-        speed = (int) ((sent_Bytes + recieved_Bytes) / ((System.currentTimeMillis() - speed) / 1000)) * 1000;
-
-        Data value = new Data(ip, uri, sent_Bytes, recieved_Bytes, speed / 1000);
+        speed = (sent_Bytes + recieved_Bytes) / (System.currentTimeMillis() - speed);
+        System.out.println(speed);
+        Data value = new Data(ip, uri, sent_Bytes, recieved_Bytes, speed);
         sample.addConn(value);
     }
 
