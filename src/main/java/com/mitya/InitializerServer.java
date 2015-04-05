@@ -11,7 +11,7 @@ public class InitializerServer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel c) throws Exception {
         c.pipeline().addLast("decoder", new HttpRequestDecoder());
         c.pipeline().addLast("encoder", new HttpResponseEncoder());
-        c.pipeline().addLast("handler", new ServerHandler(c.remoteAddress().getHostString()));
+        c.pipeline().addLast("handler", new ServerHandler(c.remoteAddress().getAddress().getHostAddress()));
     }
 
 }
